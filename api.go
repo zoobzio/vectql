@@ -39,49 +39,27 @@ package vectql
 
 import "github.com/zoobzio/vectql/internal/types"
 
-// Re-export types for public API.
+// Re-export output types needed for Renderer interface and results.
+// These are safe to export as they are produced by the library, not constructed by users.
+type (
+	// VectorAST represents the abstract syntax tree for vector queries.
+	VectorAST = types.VectorAST
+
+	// QueryResult represents the result of rendering a query.
+	QueryResult = types.QueryResult
+)
+
+// Re-export interface types for type assertions and polymorphism.
+// Interfaces are safe as they define behavior, not structure.
+type (
+	// FilterItem is the interface for filter conditions.
+	FilterItem = types.FilterItem
+)
+
+// Re-export enum types - these are safe as they're just type-safe constants.
 type (
 	// Operation represents a vector database operation type.
 	Operation = types.Operation
-
-	// Collection represents a vector collection reference.
-	Collection = types.Collection
-
-	// EmbeddingField represents a reference to an embedding field.
-	EmbeddingField = types.EmbeddingField
-
-	// MetadataField represents a reference to a metadata field.
-	MetadataField = types.MetadataField
-
-	// Param represents a named parameter reference.
-	Param = types.Param
-
-	// VectorValue represents a vector (literal or parameterized).
-	VectorValue = types.VectorValue
-
-	// SparseVectorValue represents a sparse vector for hybrid search.
-	SparseVectorValue = types.SparseVectorValue
-
-	// VectorRecord represents a vector record for upsert operations.
-	VectorRecord = types.VectorRecord
-
-	// FilterItem is the interface for filter conditions.
-	FilterItem = types.FilterItem
-
-	// FilterCondition represents a single filter condition.
-	FilterCondition = types.FilterCondition
-
-	// FilterGroup represents a group of filter conditions.
-	FilterGroup = types.FilterGroup
-
-	// RangeFilter represents a numeric range filter.
-	RangeFilter = types.RangeFilter
-
-	// GeoFilter represents a geospatial filter.
-	GeoFilter = types.GeoFilter
-
-	// GeoPoint represents a geographic coordinate.
-	GeoPoint = types.GeoPoint
 
 	// FilterOperator represents a filter operator.
 	FilterOperator = types.FilterOperator
@@ -91,16 +69,13 @@ type (
 
 	// DistanceMetric represents a distance metric for similarity.
 	DistanceMetric = types.DistanceMetric
-
-	// VectorAST represents the abstract syntax tree for vector queries.
-	VectorAST = types.VectorAST
-
-	// QueryResult represents the result of rendering a query.
-	QueryResult = types.QueryResult
-
-	// PaginationValue represents a pagination value (static or parameterized).
-	PaginationValue = types.PaginationValue
 )
+
+// Internal types are intentionally NOT re-exported to prevent validation bypass:
+// - Collection, EmbeddingField, MetadataField, Param: use instance methods (v.C(), v.E(), v.M(), v.P())
+// - VectorValue, SparseVectorValue: use Vec(), SparseVec() constructors
+// - VectorRecord: use Record() constructor
+// - FilterCondition, FilterGroup, RangeFilter, GeoFilter: use filter constructors (Eq(), And(), Range(), etc.)
 
 // Operation constants.
 const (
