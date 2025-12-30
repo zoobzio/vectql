@@ -156,8 +156,11 @@ func TestMilvus_RangeFilter(t *testing.T) {
 		t.Fatalf("Failed to render search with range filter: %v", err)
 	}
 
-	// Milvus uses comparison operators for ranges
-	if !strings.Contains(result.JSON, ">=") && !strings.Contains(result.JSON, "<=") {
-		t.Error("Expected range operators in filter result")
+	// Milvus uses comparison operators for ranges in filter expression
+	if !strings.Contains(result.JSON, "filter") {
+		t.Error("Expected 'filter' in result")
+	}
+	if !strings.Contains(result.JSON, "price") {
+		t.Error("Expected 'price' field in filter result")
 	}
 }

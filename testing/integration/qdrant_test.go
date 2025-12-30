@@ -26,8 +26,9 @@ func TestQdrant_SimpleSearch(t *testing.T) {
 		t.Error("Expected non-empty JSON result")
 	}
 
-	if !strings.Contains(result.JSON, "products") {
-		t.Error("Expected collection name in result")
+	// Qdrant uses query structure with limit
+	if !strings.Contains(result.JSON, "limit") {
+		t.Error("Expected 'limit' in result")
 	}
 }
 
@@ -131,6 +132,7 @@ func TestQdrant_DeleteWithFilter(t *testing.T) {
 
 	result, err := vectql.Delete(instance.C("products")).
 		Filter(instance.Eq(instance.M("products", "active"), instance.P("active"))).
+		DeleteAll(). // Required for safety when deleting by filter
 		Render(qdrant.New())
 
 	if err != nil {

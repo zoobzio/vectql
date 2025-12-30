@@ -26,9 +26,12 @@ func TestWeaviate_SimpleSearch(t *testing.T) {
 		t.Error("Expected non-empty JSON result")
 	}
 
-	// Weaviate uses GraphQL
-	if !strings.Contains(result.JSON, "Get") {
-		t.Error("Expected GraphQL Get query in result")
+	// Weaviate uses class and nearVector
+	if !strings.Contains(result.JSON, "class") {
+		t.Error("Expected 'class' in result")
+	}
+	if !strings.Contains(result.JSON, "nearVector") {
+		t.Error("Expected 'nearVector' in result")
 	}
 }
 
